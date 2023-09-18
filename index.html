@@ -1,165 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
   <head>
+    <meta name="google" content="notranslate" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>1d camera</title>
-    <style>
-      canvas {
-        position: fixed;
-        top: 0;
-        left: 0;
-        /* transform: scaleX(-1); */
-        image-rendering: pixelated;
-      }
-    </style>
+    <link rel="stylesheet" href="main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <script>
-      const video = document.createElement("video");
-      video.autoplay = true;
-      navigator.mediaDevices
-        .getUserMedia({
-          audio: false,
-          video: { facingMode: "environment" },
-        })
-        .then((stream) => {
-          video.srcObject = stream;
-          video.play(); // safari
-        });
+    <main>
+      <h1>
+        <button data-action="start">
+          1d<br />
+          camera
+        </button>
+      </h1>
 
-      // document.body.appendChild(video)
+      <ul></ul>
+    </main>
 
-      const canvas = document.createElement("canvas");
-      document.body.appendChild(canvas);
+    <section>
+      <canvas></canvas>
+      <button data-action="stop">‹</button>
+      <button data-action="record" id="r"></button>
+    </section>
 
-      const ctx = canvas.getContext("2d", { willReadFrequently: true });
-
-      function size() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
-      size();
-      window.addEventListener("resize", size);
-
-      const modes = [];
-
-      modes.push(() => {
-        // full screen
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-      });
-
-      modes.push(() => {
-        // sliver
-        ctx.drawImage(
-          video,
-          video.videoWidth / 2,
-          0,
-          2,
-          video.videoHeight,
-          canvas.width / 2,
-          0,
-          2,
-          canvas.height
-        );
-      });
-      modes.push(() => {
-        // bars
-        ctx.drawImage(
-          video,
-          video.videoWidth / 2,
-          0,
-          1,
-          video.videoHeight,
-          0,
-          0,
-          1,
-          canvas.height
-        );
-
-        const im = ctx.getImageData(0, 0, 1, canvas.height);
-
-        window.im = im;
-
-        for (let i = 0; i < im.data.length; i += 4) {
-          const r = im.data[i];
-          const g = im.data[i + 1];
-          const b = im.data[i + 2];
-
-          let gr = (im.data[i] + im.data[i + 1] + im.data[i + 2]) / 3 / 255;
-
-          // gr = 1 - gr;
-
-          ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
-          ctx.fillRect(
-            canvas.width * 0.5 - gr * canvas.width * 0.5 * 0.5,
-            i / 4,
-            gr * canvas.width * 0.5,
-            2
-          );
-        }
-      });
-      modes.push(() => {
-        // inverted bars
-        ctx.drawImage(
-          video,
-          video.videoWidth / 2,
-          0,
-          1,
-          video.videoHeight,
-          0,
-          0,
-          1,
-          canvas.height
-        );
-
-        const im = ctx.getImageData(0, 0, 1, canvas.height);
-
-        for (let i = 0; i < im.data.length; i += 4) {
-          const r = im.data[i];
-          const g = im.data[i + 1];
-          const b = im.data[i + 2];
-
-          let gr = (im.data[i] + im.data[i + 1] + im.data[i + 2]) / 3 / 255;
-
-          gr = 1 - gr;
-
-          ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
-          ctx.fillRect(
-            canvas.width * 0.5 - gr * canvas.width * 0.5 * 0.5,
-            i / 4,
-            gr * canvas.width * 0.5,
-            2
-          );
-        }
-      });
-
-      modes.push(() => {
-        ctx.drawImage(
-          video,
-          video.videoWidth / 2,
-          0,
-          5,
-          video.videoHeight,
-          0,
-          0,
-          canvas.width,
-          canvas.height
-        );
-      });
-
-      let rendermode = 0;
-
-      function loop() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        modes[rendermode % modes.length]();
-
-        requestAnimationFrame(loop);
-      }
-      requestAnimationFrame(loop);
-
-      document.addEventListener("click", () => rendermode++);
-    </script>
+    <script type="module" src="main.js"></script>
   </body>
 </html>

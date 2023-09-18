@@ -1,0 +1,90 @@
+body {
+  font-family: "Major Mono Display", monospace;
+}
+
+button {
+  color: inherit;
+  font-family: inherit;
+  text-decoration: inherit;
+  background-color: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+h1 button {
+  font-size: 10vw;
+  display: block;
+}
+h1 button:after {
+  content: "›";
+  display: inline-block;
+  transition: transform 0.2s;
+}
+h1 button:hover:after {
+  transform: translateX(20px);
+}
+
+ul {
+  display: flex;
+  gap: 1em;
+  list-style-type: none;
+  padding: 0;
+  flex-wrap: wrap;
+}
+
+li video {
+  border: 1px solid #000;
+  max-height: 20vh;
+  padding: 0.5em;
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #fff;
+}
+
+section {
+  background-color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: none;
+}
+
+section [data-action] {
+  position: fixed;
+  width: 15vmin;
+  height: 15vmin;
+  font-size: 15vmin;
+  bottom: 5vmin;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 15vmin;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+section [data-action="record"] {
+  right: 5vmin;
+  border: 4px solid #f00;
+  background-color: #f001;
+  transition: background-color 0.5s;
+}
+
+section [data-action="stopRecording"] {
+  right: 5vmin;
+  border: 4px solid #f00;
+  background-color: #f00;
+  transition: background-color 0.5s;
+}
+
+[data-action="stop"] {
+  left: 5vmin;
+  color: #fff;
+}
