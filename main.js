@@ -84,6 +84,9 @@ modes.push(() => {
 
     window.im = im;
 
+    ctx.fillStyle = '#fff'
+    ctx.fillRect(0, 0, $canvas.width, $canvas.height)
+
     for (let i = 0; i < im.data.length; i += 4) {
         const r = im.data[i];
         const g = im.data[i + 1];
@@ -231,7 +234,8 @@ async function stopRecording() {
 
     r.dataset.action = 'record'
 
-    return started
+    // then also stop recording
+    return stop()
 }
 
 
